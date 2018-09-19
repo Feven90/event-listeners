@@ -5,11 +5,18 @@ const submitToDoButtonElm = document.getElementById('submitToDoButton');
 const activateDeletes = () => {
     const deleteButton = document.getElementsByClassName('deleteButton');
     console.log(deleteButton);
-    
+
     for (let i=0; i< deleteButton.length; i++){
         const element = deleteButton[i];
-        element.addEventListener("click", ()=> {
-            console.log("they clicke delete!!!");
+        element.addEventListener("click", (e)=> {
+            // delete the card that the button was on 
+            // we need to get the delete button I clicked to delete that card so use e.target
+            const buttonIClicked = e.target;
+            const cardToDelete = buttonIClicked.parentNode.parentNode;
+            cardToDelete.remove();
+            // .parentNode 
+            // if it is a DOM node we can use .remove()
+            console.log("they clicked delete!!!");
         })
     }
 }

@@ -21,25 +21,25 @@ const activateDeletes = () => {
     }
 }
 
+
 const printToDom = (stringToPrint, whereToPrint) => {
     document.getElementById(whereToPrint).innerHTML += stringToPrint;
 }
 
 const buildNewToDoCard = (toDo, notes) => {
-    let domString = `<div class="card" style="width: 18rem;">
+    let domString = `<div class="card w-25 m-2">
     <div class="card-body">
       <h5 class="card-title">${toDo}</h5>
       <p class="card-text">${notes}</p>
-      <button href="#" class="btn btn-primary deleteButton">Delete</button>
+      <button href="#" class="btn btn-danger deleteButton">Delete</button>
     </div>
   </div>`
     printToDom(domString, 'toDoCards');
     activateDeletes();
-
 }
 
 submitToDoButtonElm.addEventListener("click", (e) => {
-   e.preventDefault();
+   e.preventDefault(); // prevent type submit to have the default behaviour, if we don't use this, as soon as we hit the button then everything disapears 
 
    buildNewToDoCard(toDoInputElm.value, notesInputElm.value);
 

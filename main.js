@@ -1,3 +1,4 @@
+
 const toDoInputElm = document.getElementById('toDoInput');
 const notesInputElm = document.getElementById('notesInput');
 const submitToDoButtonElm = document.getElementById('submitToDoButton');

@@ -1,105 +1,48 @@
-var outputEl = document.getElementById("output-target")
 
-/*
-    You can get a reference to DOM elements and
-    directly attach an event handler. In this
-    example, we get every element with a class of
-    "article-section" and listen for when the
-    user clicks on the element. When that event
-    fires, the attached "handleSectionClick"
-    function gets executed.
- */
-var articleEl = document.getElementsByClassName("article-section")
+const toDoInputElm = document.getElementById('toDoInput');
+const notesInputElm = document.getElementById('notesInput');
+const submitToDoButtonElm = document.getElementById('submitToDoButton');
 
-/*
-    JavaScript, in the browser, automatically send the source
-    event to the handler function for the event.
-*/
-function handleSectionClick (event) {
-    console.log(event.target.innerHTML)
+const activateDeletes = () => {
+    const deleteButton = document.getElementsByClassName('deleteButton');
+    console.log(deleteButton);
+
+    for (let i=0; i< deleteButton.length; i++){
+        const element = deleteButton[i];
+        element.addEventListener("click", (e)=> {
+            // delete the card that the button was on 
+            // we need to get the delete button I clicked to delete that card so use e.target
+            const buttonIClicked = e.target;
+            const cardToDelete = buttonIClicked.parentNode.parentNode;
+            cardToDelete.remove();
+            // .parentNode 
+            // if it is a DOM node we can use .remove()
+            console.log("they clicked delete!!!");
+        })
+    }
 }
 
-for (var i = 0; i < articleEl.length; i++) {
-    articleEl[i].addEventListener("click", handleSectionClick)
+
+const printToDom = (stringToPrint, whereToPrint) => {
+    document.getElementById(whereToPrint).innerHTML += stringToPrint;
 }
 
-/*
-    Define functions that hold logic to be performed when mouse
-    events are triggered by the browser.
-*/
-function handleHeaderMouseOver (event) {
-    outputEl.innerHTML = "You moved your mouse over me"
+const buildNewToDoCard = (toDo, notes) => {
+    let domString = `<div class="card w-25 m-2">
+    <div class="card-body">
+      <h5 class="card-title">${toDo}</h5>
+      <p class="card-text">${notes}</p>
+      <button href="#" class="btn btn-danger deleteButton">Delete</button>
+    </div>
+  </div>`
+    printToDom(domString, 'toDoCards');
+    activateDeletes();
 }
 
-function handleHeaderMouseOut(event) {
-    outputEl.innerHTML = "Why u leave me?"
-}
+submitToDoButtonElm.addEventListener("click", (e) => {
+   e.preventDefault(); // prevent type submit to have the default behaviour, if we don't use this, as soon as we hit the button then everything disapears 
 
-const header = document.getElementById("page-header");
-/*
-    Get a reference to the DOM element with an id of
-    "page-header", and attach an event handler for the
-    mouseover, and mouseout, events.
- */
-header.addEventListener("mouseover", handleHeaderMouseOver)
-header.addEventListener("mouseout", handleHeaderMouseOut)
+   buildNewToDoCard(toDoInputElm.value, notesInputElm.value);
 
+});
 
-
-/*
-    We can also write an anonymous function (lamba expression)
-    in the addEventListener declaration instead of using a
-    function reference.
- */
-var fieldEl = document.getElementById("keypress-input")
-
-fieldEl.addEventListener("keyup", function (event) {
-    outputEl.innerHTML = event.target.value
-})
-
-
-/*
-  Now we can start making a truly interactive experience
-  combining HTML, JavaScript and CSS. When a user clicks
-  on a button in the DOM, we can listen for that event in
-  JavaScript, and then add, or remove, CSS classes.
-
-  In this example, I simply use the `toggle()` method on
-  the `classList` property of a DOM element to automatically
-  add and remove a class.
- */
-var guineaPig = document.getElementById("guinea-pig")
-
-function toggleClass (newClass) {
-  guineaPig.classList.toggle(newClass)
-  console.log("guineaPig.classList", guineaPig.classList)
-}
-
-document.getElementById("add-color").addEventListener("click", function() {
-    toggleClass("blue")
-})
-
-document.getElementById("make-large").addEventListener("click", function() {
-    toggleClass("large")
-})
-
-document.getElementById("add-border").addEventListener("click", function() {
-    toggleClass("bordered")
-})
-
-document.getElementById("add-rounding").addEventListener("click", function() {
-    toggleClass("rounded")
-})
-
-
-/*
-  EVENT BUBBLING:
-
-  You can add an event handler on the body tag, and since all
-  browser events bubble up to the body, you can then put in
-  conditional logic to handle the click event on many different
-  elements in one function.
- */
-document.querySelector("body").addEventListener("click", function(event) {
-    console.log("You clicked on the body of the DOM")
-})
